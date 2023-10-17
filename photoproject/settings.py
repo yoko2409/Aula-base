@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'photo.apps.PhotoConfig',
     'accounts.apps.AccountsConfig',
+    'django_cleanup',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +126,17 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 # {% load static %}でパスを読み込めるようにするためのもの↑↑↑
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+DEFAULT_FROM_EMAIL = 'shunhengshan607@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'shunhengshan607@gmail.com'
+EMAIL_HOST_PASSWORD = 'tvnvlcsmltshlmze'
+EMAIL_USE_TLS = True
+
+# mediaフォルダーの場所を登録
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# mediaのURLを登録
+MEDIA_URL = '/media/'

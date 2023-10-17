@@ -4,9 +4,21 @@
         <h1 class="fw-light">Photo Gallery</h1>
         <p class="lead text-body-secondary">
           コメント書いてね！
+        </p>
+
         <p>
+<!--        ナビゲーションボタン-->
+        {% if user.is_authenticated %}
+<!--          ログイン中のボタン-->
+         <a href="{% url 'photo:post' %}" class="btn btn-primary my-2">投稿する</a>
+         <a href="{% url 'accounts:logout' %}" class="btn btn-secondary my-2">ログアウト</a>
+
+        {% else %}
+<!--          ログイン状態ではない場合のボタン-->
           <a href="{% url 'accounts:signup' %}" class="btn btn-primary my-2">今すぐサインアップ</a>
-          <a href="#" class="btn btn-secondary my-2">登録済みの方はログイン</a>
+          <a href="{% url 'accounts:login' %}" class="btn btn-secondary my-2">登録済みの方はログイン</a>
+
+        {% endif %}
         </p>
       </div>
     </div>

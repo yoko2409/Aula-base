@@ -1,5 +1,5 @@
 <!doctype html>
-{% load html %}
+{% load static %}
 <html lang="ja">
   <head><script src="../assets/js/color-modes.js"></script>
 
@@ -158,8 +158,8 @@
       <form method="post">
       {% csrf_token %}
 
-        <img class="mb-4" src=" static 'img/bootstrap-logo.svg'" alt="" width="72" height="57">
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+        <img style="display:block; margin-left: auto; margin-right: auto;" class="mb-4" src="{% static 'img/bootstrap-logo.svg' %}" alt="" width="72" height="57">
+        <h1 style="text-align:center;" class="h3 mb-3 fw-normal">Please sign in</h1>
 
         <label for="Username" class="visually-hidden">
           Username
@@ -175,12 +175,11 @@
 
         <input class="w-100 btn btn-lg btn-primary" type="submit" value="ログイン">
 
-
+<!--        パスワードリセットページのリンクテキスト-->
         <br><br>
-
         <p>
-          <a href="#">パスワードを忘れましたか？</a>
-          <input type="hidden" name="next" value="{% url 'photo:index %}">
+          <a href="{% url 'password_reset' %}">パスワードを忘れましたか？</a>
+          <input type="hidden" name="next" value="{% url 'photo:index' %}">
         </p>
 
       </form>
