@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}資料一覧{% endblock %}
+
+{% block contents %}
+
+<div class="container">
+    <a href="{% url 'photo:material_create' %}" class="btn btn-primary my-2">資料投稿</a>
+</div>
+
+{% for m in materials %}
+<div class="col">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <a href="{% url 'photo:material_detail' m.pk%}">
+          <p class="card-text">
+              <!--   titleフィールドを出力-->
+              <strong>{{ m.title }}</strong>　
+              <!--   投稿日時フィールドを出力-->
+              {{ m.posted_at | date:'m月d日' }}
+          </p>
+          <p class="card-text">
+            <!--    クラス名を出力-->
+            クラス名：{{ m.class_name }}
+          </p>
+          <p class="card-text">
+    <!--    投稿したユーザー名を出力-->
+            {{ m.user.username }}さんが資料を投稿しました
+          </p>
+      </a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

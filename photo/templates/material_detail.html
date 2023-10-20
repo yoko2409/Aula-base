@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}資料詳細{% endblock %}
+
+{% block contents %}
+
+
+<div class="col">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <p class="card-text">
+<!--   titleフィールドを出力-->
+        {{ object.title }}
+      </p>
+<!--    投稿したユーザー名を出力-->
+
+        <small class="text-muted">{{ m.user.username }}</small>
+      <p class="card-text">
+<!--   contentフィールドを出力-->
+        {{ object.content }}
+      </p>
+      <p class="card-text">
+<!--   投稿日時フィールドを出力-->
+        {{ object.posted_at }}
+      </p>
+      <p class="card-text">
+<!--   クラス名フィールドを出力-->
+        {{ object.class_name }}
+      </p>
+<!--      ファイルをダウンロードするボタンを出力  -->
+      {% if object.file %}
+          <p class="card-text">
+            添付ファイル：
+            <a href="{{ object.file.url }}" download>ダウンロード</a>
+          </p>
+      {% else %}
+        <p class="card-text">
+            添付ファイルがありません。
+        </p>
+        {% endif %}
+
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

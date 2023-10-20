@@ -68,3 +68,29 @@ class PhotoPost(models.Model):
 
     def __str__(self):
         return self.title
+
+class Material(models.Model):
+    # フィールドのタイトル
+    title = models.CharField(max_length=200)
+    # 記事内容のフィールド
+    content = models.TextField(blank=True)
+    # アップロードファイルのフィールド
+    file = models.FileField(upload_to='materials/', blank=True, null=True)
+    # クラス名のフィールド
+    class_name = models.ForeignKey(
+        PhotoPost,
+        on_delete=models.CASCADE)
+    # 作成ユーザーのフィールド
+    user = models.ForeignKey(
+        CustomUser,
+        # フィールドのタイトル
+        verbose_name='ユーザー',
+        # ユーザーを削除する場合はそのユーザーの投稿データも全て削除する
+        on_delete=models.CASCADE
+    )
+    # 投稿日時のフィールド
+    posted_at = models.DateTimeField(
+        # フィールドのタイトル
+        verbose_name='投稿日時',
+        # 日時を自動追加
+        auto_now_add=True)

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}資料追加{% endblock %}
+
+{% block contents %}
+<br>
+<div class="contents">
+    <div class="row">
+        <div class="col offset-2">
+            <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">資料を追加</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

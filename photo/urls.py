@@ -12,4 +12,7 @@ urlpatterns = [
     path('photo-detail/<int:pk>', views.DetailsView.as_view(), name='photo_detail'),
     path('mypage/', views.MypageView.as_view(), name='mypage'),
     path('photo/<int:pk>/delete', views.PhotoDeleteView.as_view(), name='photo_delete'),
+    path('materials/<int:class_id>/', views.MaterialListView.as_view(), name='material_list'),
+    path('material/<int:pk>/', views.MaterialDetailView.as_view(), name='material_detail'),
+    path('materials/create/', views.MaterialCreateView.as_view(), name='material_create'),
 ]

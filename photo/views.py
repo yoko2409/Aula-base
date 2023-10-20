@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView
 from django.urls import reverse_lazy
-from .forms import PhotoPostForm
+from .forms import PhotoPostForm, MaterialForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from .models import PhotoPost
+from .models import PhotoPost, Material
+from django.views import View
 
 
 # Create your views here.
@@ -90,3 +91,47 @@ class PhotoDeleteView(DeleteView):
     success_url = reverse_lazy('photo:mypage')
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
+
+class MaterialListView(View):
+    def get(self, request, class_id):
+        materials = Material.objects.filter(class_name=class_id)
+        return render(request, 'material_list.html', {'materials': materials})
+
+class MaterialDetailView(DetailView):
+    template_name = 'material_detail.html'
+    model = Material
+
+# class MaterialCreateView(View):
+#     template_name = 'material_create.html'
+#     def get(self, request):
+#         form = MaterialForm()
+#         return render(request, self.template_name, {'form': form})
+#
+#     def post(self, request):
+#         form = MaterialForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('material_list')
+#         return render(request, self.template_name, {'form': form})
+
+@method_decorator(login_required, name='dispatch')
+class MaterialCreateView(CreateView):
+    # モデルとフィールドが登録されたフォームクラス
+    # PhotoPostFormをフォームクラスとして登録
+    form_class = MaterialForm
+    # レンダリングするテンプレート
+    template_name = 'material_create.html'
+    # フォームデータ登録完了後のリダイレクト先
+    success_url = reverse_lazy('photo:index')
+
+    def form_valid(self, form):
+        # フォームデータの登録を行う
+
+        # commit=FalseにしてPOSTされたデータを取得
+        postdata = form.save(commit=False)
+        # 投稿ユーザーのidを取得してモデルのuserフィールドに格納
+        postdata.user = self.request.user
+        # 投稿データをデータベースに登録
+        postdata.save()
+        # 戻り値はスーパークラスのform_valid()の戻り値(HttpResponseRedirect)
+        return super().form_valid(form)
