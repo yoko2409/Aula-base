@@ -14,5 +14,9 @@ urlpatterns = [
     path('photo/<int:pk>/delete', views.PhotoDeleteView.as_view(), name='photo_delete'),
     path('materials/<int:class_id>/', views.MaterialListView.as_view(), name='material_list'),
     path('material/<int:pk>/', views.MaterialDetailView.as_view(), name='material_detail'),
+    path('material/<int:pk>/update', views.MaterialUpdateView.as_view(), name='material_update'),
+    path('material/updated', views.MaterialUpdateDoneView.as_view(), name='material_updated'),
+    path('material/<int:pk>/delete', views.MaterialDeleteView.as_view(), name='material_delete'),
+    path('material/done', views.MaterialDoneView.as_view(), name='material_done'),
     path('materials/create/', views.MaterialCreateView.as_view(), name='material_create'),
 ]

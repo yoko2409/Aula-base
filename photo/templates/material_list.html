@@ -4,32 +4,71 @@
 
 {% block contents %}
 
-<div class="container">
-    <a href="{% url 'photo:material_create' %}" class="btn btn-primary my-2">資料投稿</a>
+<div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+    <button class="btn btn-bd-primary py-2 d-flex align-items-center"
+            id="bd-theme"
+            type="button"
+            aria-expanded="false"
+            data-bs-toggle="dropdown"
+            aria-label="Toggle theme (auto)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-circle"
+             viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg>
+
+        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+        <li>
+            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
+                    aria-pressed="false"
+                    onclick="location.href='{% url 'photo:material_create' %}'">
+                <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                    <use href="#sun-fill"></use>
+                </svg>
+                資料投稿
+                <svg class="bi ms-auto d-none" width="1em" height="1em">
+                    <use href="#check2"></use>
+                </svg>
+            </button>
+        </li>
+    </ul>
 </div>
 
-{% for m in materials %}
-<div class="col">
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <a href="{% url 'photo:material_detail' m.pk%}">
-          <p class="card-text">
-              <!--   titleフィールドを出力-->
-              <strong>{{ m.title }}</strong>　
-              <!--   投稿日時フィールドを出力-->
-              {{ m.posted_at | date:'m月d日' }}
-          </p>
-          <p class="card-text">
-            <!--    クラス名を出力-->
-            クラス名：{{ m.class_name }}
-          </p>
-          <p class="card-text">
-    <!--    投稿したユーザー名を出力-->
-            {{ m.user.username }}さんが資料を投稿しました
-          </p>
-      </a>
+<br>
+<section class="rounded-3 bg-success py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="text-bg-success">
+                {% for obj in class_obj %}
+                {{ obj.title }}
+                {% endfor %}
+            </h1>
+        </div>
     </div>
-  </div>
+</section>
+<br>
+
+{% for m in materials %}
+<br>
+<div class="container-sm text-center border border-dark-subtle rounded-3" onMouseOut="this.style.background='#fff';" onMouseOver="this.style.background='#ccc'">
+    <div class="row d-flex justify-content-around">
+        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0"
+           href="{% url 'photo:material_detail' m.pk%}" style="display: inline-block">
+            <div class="card-body cord col-4 col-sm-6 p-3" style="text-align: left;">
+                    <p style="margin: 0;">
+                        <!--    投稿したユーザー名を出力-->
+                        {{ m.user.username }}さんが資料を投稿しました:<strong>{{ m.title }}</strong>
+                    </p>
+                    <small>
+                        <!--   投稿日時フィールドを出力-->
+                        {{ m.posted_at | date:'m月d日' }}
+                    </small>
+            </div>
+        </a>
+
+    </div>
 </div>
 {% endfor %}
 {% endblock %}

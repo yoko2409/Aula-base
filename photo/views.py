@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView
+from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
 from .forms import PhotoPostForm, MaterialForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from .models import PhotoPost, Material
 from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 # Create your views here.
@@ -95,7 +97,8 @@ class PhotoDeleteView(DeleteView):
 class MaterialListView(View):
     def get(self, request, class_id):
         materials = Material.objects.filter(class_name=class_id)
-        return render(request, 'material_list.html', {'materials': materials})
+        class_obj = PhotoPost.objects.filter(id=class_id)
+        return render(request, 'material_list.html', {'materials': materials, 'class_obj': class_obj})
 
 class MaterialDetailView(DetailView):
     template_name = 'material_detail.html'
@@ -135,3 +138,24 @@ class MaterialCreateView(CreateView):
         postdata.save()
         # 戻り値はスーパークラスのform_valid()の戻り値(HttpResponseRedirect)
         return super().form_valid(form)
+
+class MaterialDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+
+    model = Material
+    template_name = 'material_delete.html'
+    success_url = reverse_lazy('photo:material_done')  # 例: コースのリストページへリダイレクト
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
+
+class MaterialDoneView(TemplateView):
+    template_name = 'material_done.html'
+
+class MaterialUpdateView(UpdateView):
+    model = Material
+    form_class = MaterialForm
+    template_name = 'material_update.html'
+    success_url = reverse_lazy('photo:material_updated')
+
+class MaterialUpdateDoneView(TemplateView):
+    template_name = 'material_updated.html'
