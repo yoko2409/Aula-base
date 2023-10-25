@@ -15,7 +15,6 @@ class Category(models.Model):
 
 class PhotoPost(models.Model):
     # CustomUserモデルとPhotoPostモデルを1対多の関係で結びつける
-    objects = None
     user = models.ForeignKey(
         CustomUser,
         # フィールドのタイトル
